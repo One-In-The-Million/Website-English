@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Stranger Vocabulary Challenge</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Cinzel', serif;
+}
+
+body{
+  background:black;
+  overflow:hidden;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  position:relative;
+}
+
+/* BACKGROUND EFFECT */
+
+body::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:
+  radial-gradient(circle at center,
+  rgba(255,0,0,0.2),
+  transparent 70%);
+  animation:pulse 4s infinite;
+}
+
+@keyframes pulse{
+  0%{opacity:0.4;}
+  50%{opacity:1;}
+  100%{opacity:0.4;}
+}
+
+/* FLOATING LIGHTS */
+
+.light{
+  position:absolute;
+  width:10px;
+  height:10px;
+  background:red;
+  border-radius:50%;
+  box-shadow:0 0 20px red;
+  animation:float 8s linear infinite;
+}
+
+@keyframes float{
+  from{
+    transform:translateY(100vh);
+    opacity:0;
+  }
+  to{
+    transform:translateY(-100vh);
+    opacity:1;
+  }
+}
+
+.container{
+  width:90%;
+  max-width:800px;
+  background:rgba(0,0,0,0.8);
+  border:2px solid red;
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+  box-shadow:
+  0 0 20px red,
+  0 0 40px darkred;
+  position:relative;
+  z-index:2;
+}
+
+.title{
+  font-size:45px;
+  color:#ff2a2a;
+  text-shadow:
+  0 0 10px red,
+  0 0 20px red;
+  margin-bottom:20px;
+  letter-spacing:3px;
+}
+
+.subtitle{
+  color:#ccc;
+  margin-bottom:20px;
+}
+
+.hidden{
+  display:none;
+}
+
+input{
+  width:100%;
+  padding:15px;
+  margin:20px 0;
+  border:none;
+  border-radius:10px;
+  background:#111;
+  color:white;
+  border:1px solid red;
+  font-size:16px;
+}
+
+button{
+  padding:14px 25px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:16px;
+  margin:10px;
+  transition:0.3s;
+  background:#111;
+  color:#ff4d4d;
+  border:1px solid red;
+  box-shadow:0 0 10px red;
+}
+
+button:hover{
+  transform:scale(1.05);
+  background:red;
+  color:white;
+  box-shadow:0 0 20px red;
+}
+
+.menu-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-top:20px;
+}
+
+.question-box{
+  margin-top:25px;
+  background:rgba(255,0,0,0.08);
+  border:1px solid red;
+  border-radius:15px;
+  padding:25px;
+}
+
+.question{
+  font-size:35px;
+  margin-bottom:15px;
+  color:#ff4d4d;
+  text-shadow:0 0 10px red;
+}
+
+.options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-top:20px;
+}
+
+.result{
+  margin-top:20px;
+  font-size:22px;
+  min-height:30px;
+}
+
+.score-board{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.score-box{
+  flex:1;
+  min-width:120px;
+  background:#111;
+  border:1px solid red;
+  border-radius:12px;
+  padding:15px;
+  box-shadow:0 0 10px red;
+}
+
+.final-score{
+  font-size:70px;
+  color:#ff2a2a;
+  text-shadow:0 0 20px red;
+  margin:20px 0;
+}
+
+.footer{
+  margin-top:20px;
+  color:#999;
+  font-size:14px;
+}
+
+@media(max-width:600px){
+
+  .menu-buttons,
+  .options{
+    grid-template-columns:1fr;
+  }
+
+  .title{
+    font-size:32px;
+  }
+
+  .question{
+    font-size:26px;
+  }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- LIGHT EFFECTS -->
+<div class="light" style="left:10%; animation-delay:0s;"></div>
+<div class="light" style="left:30%; animation-delay:2s;"></div>
+<div class="light" style="left:50%; animation-delay:4s;"></div>
+<div class="light" style="left:70%; animation-delay:1s;"></div>
+<div class="light" style="left:90%; animation-delay:3s;"></div>
+
+<div class="container">
+
+<!-- LOGIN -->
+<div id="loginPage">
+
+<h1 class="title">STRANGER VOCABULARY</h1>
+
+<p class="subtitle">
+Enter your name to enter the Upside Down...
+</p>
+
+<input type="text" id="playerName" placeholder="Your Name">
+
+<button onclick="startApp()">
+ENTER
+</button>
+
+</div>
+
+<!-- HOME -->
+<div id="homePage" class="hidden">
+
+<h1 class="title">HOME</h1>
+
+<h2 id="welcomeText"></h2>
+
+<p class="subtitle">
+Choose your challenge
+</p>
+
+<div class="menu-buttons">
+
+<button onclick="selectChallenge('synonym')">
+SYNONYM
+</button>
+
+<button onclick="selectChallenge('antonym')">
+ANTONYM
+</button>
+
+</div>
+
+</div>
+
+<!-- LEVEL -->
+<div id="levelPage" class="hidden">
+
+<h1 class="title">SELECT LEVEL</h1>
+
+<div class="menu-buttons">
+
+<button onclick="startQuiz('easy')">
+EASY
+</button>
+
+<button onclick="startQuiz('hard')">
+HARD
+</button>
+
+<button onclick="startQuiz('very hard')">
+VERY HARD
+</button>
+
+</div>
+
+</div>
+
+<!-- QUIZ -->
+<div id="quizPage" class="hidden">
+
+<h1 class="title">VOCAB QUIZ</h1>
+
+<div class="score-board">
+
+<div class="score-box">
+<h3>SCORE</h3>
+<p id="score">0</p>
+</div>
+
+<div class="score-box">
+<h3>QUESTION</h3>
+<p id="questionNumber">1 / 10</p>
+</div>
+
+<div class="score-box">
+<h3>LEVEL</h3>
+<p id="currentLevel">EASY</p>
+</div>
+
+</div>
+
+<div class="question-box">
+
+<div class="question" id="questionWord">
+Happy
+</div>
+
+<p id="challengeType">
+Choose the synonym:
+</p>
+
+<div class="options" id="options"></div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+</div>
+
+<!-- RESULT -->
+<div id="resultPage" class="hidden">
+
+<h1 class="title">FINAL SCORE</h1>
+
+<h2 id="finalName"></h2>
+
+<div class="final-score" id="finalScore">
+100
+</div>
+
+<p id="finalMessage"></p>
+
+<button onclick="restartGame()">
+PLAY AGAIN
+</button>
+
+</div>
+
+<div class="footer">
+Inspired by the mysterious atmosphere of Stranger Things
+</div>
+
+</div>
+
+<script>
+
+/* QUESTIONS */
+
+const synonymQuestions = {
+easy:[
+{word:"Happy",correct:"Joyful",options:["Sad","Joyful","Angry","Cold"]},
+{word:"Big",correct:"Large",options:["Small","Large","Tiny","Dark"]},
+{word:"Fast",correct:"Quick",options:["Slow","Quick","Weak","Heavy"]},
+{word:"Smart",correct:"Intelligent",options:["Lazy","Weak","Intelligent","Cold"]},
+{word:"Beautiful",correct:"Pretty",options:["Ugly","Pretty","Bad","Dark"]},
+{word:"Easy",correct:"Simple",options:["Hard","Simple","Long","Sharp"]},
+{word:"Strong",correct:"Powerful",options:["Weak","Powerful","Soft","Poor"]},
+{word:"Begin",correct:"Start",options:["End","Close","Start","Break"]},
+{word:"End",correct:"Finish",options:["Open","Finish","Rise","Sleep"]},
+{word:"Small",correct:"Tiny",options:["Huge","Tiny","Tall","Fast"]}
+],
+
+hard:[
+{word:"Ancient",correct:"Old",options:["Modern","Old","Future","New"]},
+{word:"Brave",correct:"Courageous",options:["Weak","Courageous","Coward","Lazy"]},
+{word:"Rapid",correct:"Fast",options:["Slow","Fast","Heavy","Cold"]},
+{word:"Famous",correct:"Well-known",options:["Unknown","Well-known","Dark","Silent"]},
+{word:"Fragile",correct:"Delicate",options:["Strong","Delicate","Heavy","Hard"]},
+{word:"Massive",correct:"Huge",options:["Tiny","Huge","Flat","Cold"]},
+{word:"Silent",correct:"Quiet",options:["Loud","Quiet","Sharp","Heavy"]},
+{word:"Difficult",correct:"Hard",options:["Easy","Hard","Soft","Safe"]},
+{word:"Accurate",correct:"Correct",options:["Wrong","Correct","Weak","Slow"]},
+{word:"Wealthy",correct:"Rich",options:["Poor","Rich","Hungry","Weak"]}
+],
+
+"very hard":[
+{word:"Benevolent",correct:"Kind",options:["Cruel","Kind","Greedy","Angry"]},
+{word:"Meticulous",correct:"Careful",options:["Careless","Careful","Weak","Fast"]},
+{word:"Obsolete",correct:"Outdated",options:["Modern","Outdated","Useful","Bright"]},
+{word:"Ambiguous",correct:"Unclear",options:["Clear","Unclear","Sharp","Strong"]},
+{word:"Eloquent",correct:"Persuasive",options:["Silent","Persuasive","Weak","Cold"]},
+{word:"Tedious",correct:"Boring",options:["Fun","Boring","Exciting","Fast"]},
+{word:"Hostile",correct:"Aggressive",options:["Friendly","Aggressive","Soft","Calm"]},
+{word:"Scarce",correct:"Rare",options:["Common","Rare","Cheap","Heavy"]},
+{word:"Vivid",correct:"Bright",options:["Dark","Bright","Weak","Silent"]},
+{word:"Peculiar",correct:"Strange",options:["Normal","Strange","Easy","Soft"]}
+]
+};
+
+const antonymQuestions = {
+easy:[
+{word:"Hot",correct:"Cold",options:["Warm","Cold","Fast","Big"]},
+{word:"Happy",correct:"Sad",options:["Joyful","Sad","Tall","Strong"]},
+{word:"Big",correct:"Small",options:["Large","Wide","Small","Heavy"]},
+{word:"Fast",correct:"Slow",options:["Quick","Slow","Bright","Sharp"]},
+{word:"Strong",correct:"Weak",options:["Hard","Weak","Heavy","Rich"]},
+{word:"Open",correct:"Close",options:["Close","Push","Rise","Start"]},
+{word:"Early",correct:"Late",options:["Soon","Late","Morning","Night"]},
+{word:"Light",correct:"Dark",options:["Bright","Dark","Clear","Warm"]},
+{word:"Easy",correct:"Difficult",options:["Simple","Difficult","Soft","Safe"]},
+{word:"Tall",correct:"Short",options:["High","Short","Thin","Strong"]}
+],
+
+hard:[
+{word:"Ancient",correct:"Modern",options:["Old","Modern","Weak","Past"]},
+{word:"Rich",correct:"Poor",options:["Hungry","Poor","Dark","Strong"]},
+{word:"Victory",correct:"Defeat",options:["Win","Defeat","Fight","Game"]},
+{word:"Brave",correct:"Cowardly",options:["Strong","Cowardly","Fast","Smart"]},
+{word:"Expand",correct:"Shrink",options:["Grow","Shrink","Open","Rise"]},
+{word:"Accept",correct:"Reject",options:["Receive","Reject","Like","Build"]},
+{word:"Increase",correct:"Decrease",options:["Grow","Decrease","Improve","Lift"]},
+{word:"Noisy",correct:"Quiet",options:["Loud","Quiet","Fast","Heavy"]},
+{word:"Permanent",correct:"Temporary",options:["Long","Temporary","Fixed","Strong"]},
+{word:"Generous",correct:"Selfish",options:["Kind","Selfish","Friendly","Smart"]}
+],
+
+"very hard":[
+{word:"Optimistic",correct:"Pessimistic",options:["Hopeful","Pessimistic","Strong","Bright"]},
+{word:"Complex",correct:"Simple",options:["Hard","Simple","Large","Fast"]},
+{word:"Abundant",correct:"Scarce",options:["Many","Scarce","Rich","Heavy"]},
+{word:"Transparent",correct:"Opaque",options:["Clear","Opaque","Bright","Sharp"]},
+{word:"Hostile",correct:"Friendly",options:["Aggressive","Friendly","Loud","Strong"]},
+{word:"Inferior",correct:"Superior",options:["Weak","Superior","Poor","Old"]},
+{word:"Rigid",correct:"Flexible",options:["Hard","Flexible","Strong","Sharp"]},
+{word:"Artificial",correct:"Natural",options:["Fake","Natural","Bright","Cheap"]},
+{word:"Bold",correct:"Timid",options:["Brave","Timid","Strong","Quick"]},
+{word:"Expand",correct:"Contract",options:["Grow","Contract","Open","Build"]}
+]
+};
+
+let playerName = "";
+let selectedChallenge = "";
+let currentQuestions = [];
+let currentQuestion = 0;
+let score = 0;
+
+/* PAGE CONTROL */
+
+function showPage(id){
+
+document.querySelectorAll(".container > div")
+.forEach(page=>{
+page.classList.add("hidden");
+});
+
+document.getElementById(id)
+.classList.remove("hidden");
+
+}
+
+/* START */
+
+function startApp(){
+
+playerName =
+document.getElementById("playerName").value;
+
+if(playerName.trim() === ""){
+alert("Please enter your name!");
+return;
+}
+
+document.getElementById("welcomeText")
+.innerHTML =
+"Welcome, " + playerName;
+
+showPage("homePage");
+
+}
+
+/* SELECT CHALLENGE */
+
+function selectChallenge(type){
+
+selectedChallenge = type;
+
+showPage("levelPage");
+
+}
+
+/* START QUIZ */
+
+function startQuiz(level){
+
+currentQuestion = 0;
+score = 0;
+
+document.getElementById("score")
+.innerHTML = score;
+
+document.getElementById("currentLevel")
+.innerHTML = level.toUpperCase();
+
+if(selectedChallenge === "synonym"){
+currentQuestions = synonymQuestions[level];
+}else{
+currentQuestions = antonymQuestions[level];
+}
+
+showPage("quizPage");
+
+loadQuestion();
+
+}
+
+/* LOAD QUESTION */
+
+function loadQuestion(){
+
+const q = currentQuestions[currentQuestion];
+
+document.getElementById("questionWord")
+.innerHTML = q.word;
+
+document.getElementById("questionNumber")
+.innerHTML =
+(currentQuestion + 1) + " / 10";
+
+document.getElementById("challengeType")
+.innerHTML =
+selectedChallenge === "synonym"
+? "Choose the synonym:"
+: "Choose the antonym:";
+
+document.getElementById("result")
+.innerHTML = "";
+
+const options =
+document.getElementById("options");
+
+options.innerHTML = "";
+
+q.options.forEach(option=>{
+
+const btn =
+document.createElement("button");
+
+btn.innerHTML = option;
+
+btn.onclick = () => checkAnswer(option);
+
+options.appendChild(btn);
+
+});
+
+}
+
+/* CHECK ANSWER */
+
+function checkAnswer(selected){
+
+const correct =
+currentQuestions[currentQuestion].correct;
+
+const buttons =
+document.querySelectorAll(".options button");
+
+buttons.forEach(btn=>{
+btn.disabled = true;
+});
+
+if(selected === correct){
+
+document.getElementById("result")
+.innerHTML = "✅ CORRECT";
+
+document.getElementById("result")
+.style.color = "#00ff99";
+
+score += 10;
+
+}else{
+
+document.getElementById("result")
+.innerHTML =
+"❌ WRONG | ANSWER: " + correct;
+
+document.getElementById("result")
+.style.color = "#ff4d4d";
+
+}
+
+document.getElementById("score")
+.innerHTML = score;
+
+setTimeout(()=>{
+
+currentQuestion++;
+
+if(currentQuestion < 10){
+
+loadQuestion();
+
+}else{
+
+showResult();
+
+}
+
+},1200);
+
+}
+
+/* SHOW RESULT */
+
+function showResult(){
+
+showPage("resultPage");
+
+document.getElementById("finalName")
+.innerHTML = playerName;
+
+document.getElementById("finalScore")
+.innerHTML = score;
+
+let message = "";
+
+if(score === 100){
+message = "🌟 YOU ESCAPED THE UPSIDE DOWN!";
+}
+else if(score >= 70){
+message = "🔥 GREAT WORK!";
+}
+else if(score >= 50){
+message = "⚡ GOOD EFFORT!";
+}
+else{
+message = "👁 THE UPSIDE DOWN IS WATCHING...";
+}
+
+document.getElementById("finalMessage")
+.innerHTML = message;
+
+}
+
+/* RESTART */
+
+function restartGame(){
+
+showPage("loginPage");
+
+document.getElementById("playerName")
+.value = "";
+
+}
+
+</script>
+
+</body>
+</html>
