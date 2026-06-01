@@ -18,7 +18,7 @@
 }
 
 body{
-  background:black;
+  background:#000;
   overflow-y:auto;
   overflow-x:hidden;
   min-height:100vh;
@@ -194,6 +194,27 @@ button:hover{
   border-radius:12px;
   padding:15px;
   box-shadow:0 0 10px red;
+}
+
+.timer-box,
+.life-box,
+.score-box{
+
+  background:#111;
+  border:1px solid red;
+  border-radius:12px;
+  padding:15px;
+  margin-top:15px;
+
+  box-shadow:
+  0 0 10px red;
+
+  font-size:20px;
+  color:#fff;
+
+  animation:
+  scoreFloat 4s infinite;
+
 }
 
 .final-score{
@@ -697,6 +718,244 @@ body::after{
 
 }
 
+/* PAGE TRANSITION */
+
+/* ====================================== */
+/* GLITCH + BLOOD TRANSITION */
+/* ====================================== */
+
+.page-transition{
+  animation:
+  glitchTransition 0.9s ease,
+  bloodFlash 0.9s ease;
+  overflow:hidden;
+}
+
+/* GLITCH EFFECT */
+
+@keyframes glitchTransition{
+
+  0%{
+    opacity:0;
+    transform:
+    scale(1.15)
+    skewX(10deg);
+filter:
+blur(6px)
+brightness(0.9)
+hue-rotate(0deg);
+  }
+
+  10%{
+    transform:
+    translate(-15px, 5px)
+    skewX(-10deg);
+  }
+
+  20%{
+    transform:
+    translate(15px,-5px)
+    skewX(8deg);
+  }
+
+  30%{
+    transform:
+    translate(-10px,10px)
+    skewX(-6deg);
+  }
+
+  40%{
+    transform:
+    translate(8px,-8px)
+    skewX(4deg);
+  }
+
+50%{
+  transform:
+  scale(1.03)
+  rotate(1deg);
+
+  filter:
+  blur(2px)
+  brightness(0.85)
+  hue-rotate(10deg);
+}
+
+  70%{
+    transform:
+    translate(-5px,3px)
+    skewX(-2deg);
+  }
+
+  100%{
+    opacity:1;
+    transform:
+    scale(1)
+    skewX(0deg)
+    rotate(0deg);
+    filter:
+    blur(0px)
+    hue-rotate(0deg);
+  }
+
+}
+
+/* BLOOD FLASH */
+
+@keyframes bloodFlash{
+
+  0%{
+    background:
+    rgba(120,0,0,0.85);
+  }
+
+  25%{
+    background:
+    rgba(80,0,0,0.45);
+  }
+
+  50%{
+    background:
+    rgba(40,0,0,0.25);
+  }
+
+  75%{
+    background:
+    rgba(20,0,0,0.08);
+  }
+
+  100%{
+    background:
+    rgba(0,0,0,0);
+  }
+
+}
+
+/* ====================================== */
+/* EFEK DARAH MENETES */
+/* ====================================== */
+
+.blood-drip{
+  position:fixed;
+  top:-120px;
+  width:22px;
+  height:180px;
+
+  background:
+  linear-gradient(
+    to bottom,
+    darkred,
+    red,
+    transparent
+  );
+
+  border-radius:50px;
+
+  opacity:0;
+  z-index:99999;
+
+  animation:
+  dripFall 1s ease forwards;
+}
+
+/* POSISI ACAK */
+
+.blood1{ left:10%; }
+.blood2{ left:28%; }
+.blood3{ left:50%; }
+.blood4{ left:72%; }
+.blood5{ left:88%; }
+
+@keyframes dripFall{
+
+  0%{
+    top:-180px;
+    opacity:0;
+    transform:scaleY(0.2);
+  }
+
+  20%{
+    opacity:1;
+  }
+
+  100%{
+    top:100%;
+    opacity:0;
+    transform:scaleY(1.4);
+  }
+
+}
+
+/* ====================================== */
+/* GLITCH SCREEN OVERLAY */
+/* ====================================== */
+
+.glitch-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  pointer-events:none;
+
+  background:
+  repeating-linear-gradient(
+    to bottom,
+    rgba(255,0,0,0.18) 0px,
+    rgba(120,0,0,0.18) 2px,
+    transparent 2px,
+    transparent 5px
+  );
+
+  mix-blend-mode:darken;
+
+  opacity:0;
+
+  z-index:99998;
+
+  animation:
+  glitchOverlayAnim 0.8s ease;
+}
+
+@keyframes glitchOverlayAnim{
+
+  0%{
+    opacity:0;
+    transform:translateX(0);
+    filter:hue-rotate(0deg);
+  }
+
+  20%{
+    opacity:1;
+    transform:translateX(-15px);
+    filter:hue-rotate(-20deg);
+  }
+
+  40%{
+    transform:translateX(15px);
+    filter:hue-rotate(20deg);
+  }
+
+  60%{
+    transform:translateX(-10px);
+    filter:hue-rotate(-10deg);
+  }
+
+  80%{
+    transform:translateX(5px);
+    filter:hue-rotate(10deg);
+  }
+
+  100%{
+    opacity:0;
+    transform:translateX(0);
+    filter:hue-rotate(0deg);
+  }
+
+}
+
 /* MOBILE IMPROVEMENT */
 
 @media(max-width:768px){
@@ -775,6 +1034,16 @@ body::after{
   <source src="click.mp3" type="audio/mpeg">
 </audio>
 
+<!-- CORRECT SOUND -->
+<audio id="correctSound">
+  <source src="correct-answer.mp3" type="audio/mpeg">
+</audio>
+
+<!-- WRONG SOUND -->
+<audio id="wrongSound">
+  <source src="wrong-answer.mp3" type="audio/mpeg">
+</audio>
+
 <!-- LIGHT EFFECTS -->
 <div class="light" style="left:10%; animation-delay:0s;"></div>
 <div class="light" style="left:30%; animation-delay:2s;"></div>
@@ -848,7 +1117,34 @@ ENTER
 <h2 id="welcomeText"></h2>
 
 <p class="subtitle">
-Choose your challenge
+Choose your nightmare challenge
+</p>
+
+<div class="menu-buttons">
+
+<button onclick="openMindFlayer()">
+WORD MIND FLAYER
+</button>
+
+<button onclick="startGateCipher()">
+THE GATE CIPHER
+</button>
+
+<button onclick="startMemoryGaps()">
+ELEVEN'S MEMORY GAPS
+</button>
+
+</div>
+
+</div>
+
+<!-- WORD MIND FLAYER -->
+<div id="mindFlayerPage" class="hidden">
+
+<h1 class="title">WORD MIND FLAYER</h1>
+
+<p class="subtitle">
+Choose your vocabulary mode
 </p>
 
 <div class="menu-buttons">
@@ -891,25 +1187,33 @@ VERY HARD
 <!-- QUIZ -->
 <div id="quizPage" class="hidden">
 
-<h1 class="title">VOCAB QUIZ</h1>
+<h1 class="title">WORD MIND FLAYER</h1>
 
-<div class="score-board">
+<div class="timer-box">
+  <div class="timer-text">
+    ⏳ TIME :
+    <span id="timer">15</span>
+  </div>
+</div>
 
-<div class="score-box">
-<h3>SCORE</h3>
-<p id="score">0</p>
+<div class="life-box">
+  ❤️ LIFE :
+  <span id="life">3</span>
 </div>
 
 <div class="score-box">
-<h3>QUESTION</h3>
-<p id="questionNumber">1 / 10</p>
+  📝 QUESTION :
+  <span id="questionNumber">1 / 10</span>
 </div>
 
 <div class="score-box">
-<h3>LEVEL</h3>
-<p id="currentLevel">EASY</p>
+  🎮 LEVEL :
+  <span id="currentLevel">EASY</span>
 </div>
 
+<div class="life-box">
+  🏆 SCORE :
+  <span id="score">0</span>
 </div>
 
 <div class="question-box">
@@ -930,27 +1234,205 @@ Choose the synonym:
 
 </div>
 
-<!-- RESULT -->
-<div id="resultPage" class="hidden">
+<!-- GATE CIPHER LEVEL -->
+<div id="cipherLevelPage" class="hidden">
 
-<h1 class="title">FINAL SCORE</h1>
+<h1 class="title">THE GATE CIPHER</h1>
 
-<h2 id="finalName"></h2>
+<p class="subtitle">
+Choose your difficulty
+</p>
 
-<div class="final-score" id="finalScore">
-100
-</div>
+<div class="menu-buttons">
 
-<p id="finalMessage"></p>
+<button onclick="startGateCipherLevel('easy')">
+EASY
+</button>
 
-<button onclick="restartGame()">
-PLAY AGAIN
+<button onclick="startGateCipherLevel('hard')">
+HARD
+</button>
+
+<button onclick="startGateCipherLevel('very hard')">
+VERY HARD
 </button>
 
 </div>
 
-<div class="footer">
-Inspired by the mysterious atmosphere of Stranger Things
+</div>
+
+<!-- THE GATE CIPHER -->
+<div id="gateCipherPage" class="hidden">
+
+<h1 class="title">THE GATE CIPHER</h1>
+
+<p id="cipherDifficulty"></p>
+
+<div class="timer-box">
+  <div class="timer-text">
+    ⏳ TIME :
+<span id="cipherTimer">15</span>
+  </div>
+</div>
+
+<div class="life-box">
+  ❤️ LIFE :
+<span id="cipherLife">3</span>
+</div>
+
+<div class="score-box">
+  📝 QUESTION :
+  <span id="questionNumber">1 / 10</span>
+</div>
+
+<div class="score-box">
+  🎮 LEVEL :
+<span id="cipherCurrentLevel">EASY</span>
+</div>
+
+<div class="life-box">
+  🏆 SCORE :
+<span id="cipherScore">0</span>
+</div>
+
+<div class="question-box">
+
+<div class="question" id="cipherWord">
+APPLE
+</div>
+
+<input
+id="cipherInput"
+type="text"
+placeholder="Type the correct word"
+>
+
+<button onclick="checkCipherAnswer()">
+SUBMIT
+</button>
+
+<div class="result" id="cipherResult"></div>
+
+</div>
+</div>
+
+<!-- MEMORY LEVEL -->
+<div id="memoryLevelPage" class="hidden">
+
+<h1 class="title">ELEVEN'S MEMORY GAPS</h1>
+
+<p class="subtitle">
+Choose your difficulty
+</p>
+
+<div class="menu-buttons">
+
+<button onclick="startMemoryLevel('easy')">
+EASY
+</button>
+
+<button onclick="startMemoryLevel('hard')">
+HARD
+</button>
+
+<button onclick="startMemoryLevel('very hard')">
+VERY HARD
+</button>
+
+</div>
+
+</div>
+
+<!-- ELEVEN MEMORY GAPS -->
+<div id="memoryPage" class="hidden">
+
+<h1 class="title">ELEVEN'S MEMORY GAPS</h1>
+
+<p id="memoryDifficulty"></p>
+
+<div class="timer-box">
+  <div class="timer-text">
+    ⏳ TIME :
+<span id="memoryTimer">15</span>
+  </div>
+</div>
+
+<div class="life-box">
+  ❤️ LIFE :
+<span id="memoryLife">3</span>
+</div>
+
+<div class="score-box">
+  📝 QUESTION :
+<span id="memoryQuestionNumber">1 / 10</span>
+</div>
+
+<div class="score-box">
+  🎮 LEVEL :
+<span id="memoryCurrentLevel">EASY</span>
+</div>
+
+<div class="life-box">
+  🏆 SCORE :
+<span id="memoryScore">0</span>
+</div>
+
+<div class="question-box">
+
+<div class="question" id="memoryWord">
+A P _ L E
+</div>
+
+<input
+id="memoryInput"
+type="text"
+placeholder="Guess the word"
+>
+
+<button onclick="checkMemoryAnswer()">
+SUBMIT
+</button>
+
+<div class="result" id="memoryResult"></div>
+
+</div>
+</div>
+
+<!-- UNIVERSAL RESULT PAGE -->
+<div id="gameResultPage" class="hidden">
+
+<h1 class="title">GAME RESULT</h1>
+
+<h2 id="resultPlayerName"></h2>
+
+<div class="final-score" id="gameFinalScore">
+0
+</div>
+
+<div class="life-box">
+❤️ REMAINING LIFE :
+<span id="remainingLife">0</span>
+</div>
+
+<p id="gameResultMessage"
+style="
+margin-top:20px;
+font-size:22px;
+color:#ffcccc;
+">
+MESSAGE
+</p>
+
+<div class="menu-buttons">
+
+<button onclick="restartSameGame()">
+🔄 PLAY AGAIN
+</button>
+
+<button onclick="goHome()">
+🏠 HOME
+</button>
+
 </div>
 
 </div>
@@ -1041,13 +1523,213 @@ hard:[
 ]
 };
 
+const cipherQuestions = {
+
+easy:[
+{word:"APPLE",scramble:"PPAEL"},
+{word:"HOUSE",scramble:"SUOHE"},
+{word:"WATER",scramble:"TREWA"},
+{word:"GHOST",scramble:"TSHGO"},
+{word:"SHADOW",scramble:"DWOHAS"},
+{word:"MONKEY",scramble:"KYMONE"},
+{word:"WINDOW",scramble:"DOWWIN"},
+{word:"BUTTON",scramble:"TONBUT"},
+{word:"SCHOOL",scramble:"OLSOHCH"},
+{word:"STREAM",scramble:"MRAETS"}
+],
+
+hard:[
+{word:"BEAUTIFUL",scramble:"LIFUTBEUA"},
+{word:"DANGEROUS",scramble:"ROUSDANEG"},
+{word:"MONSTER",scramble:"STNMOER"},
+{word:"HOSPITAL",scramble:"PITHOLSA"},
+{word:"ELEPHANT",scramble:"HETPANEL"},
+{word:"LANGUAGE",scramble:"GUGAELAN"},
+{word:"TREASURE",scramble:"SEUARRTE"},
+{word:"NOTEBOOK",scramble:"KOBEONTO"},
+{word:"SUNLIGHT",scramble:"HSTNLGIU"},
+{word:"PAINTING",scramble:"INTPGAIN"}
+],
+
+"very hard":[
+{word:"INTELLIGENT",scramble:"TELINTNLEIG"},
+{word:"MYSTERIOUS",scramble:"YSTERMOUIS"},
+{word:"EXPERIMENT",scramble:"TEXEPRMIEN"},
+{word:"UNDERWORLD",scramble:"LDERUNWOR"},
+{word:"COMMUNICATE",scramble:"MUNCOCIMTAE"},
+{word:"DIMENSIONAL",scramble:"SIONDIMENAL"},
+{word:"IMAGINATION",scramble:"GINATIMIAON"},
+{word:"TRANSFORMER",scramble:"FORMRTRANSE"},
+{word:"KNOWLEDGE",scramble:"WOLKEDNGE"},
+{word:"PSYCHOLOGY",scramble:"CHOYPSGOLY"}
+]
+
+};
+
+const memoryQuestions = {
+
+easy:[
+{
+show:"A P _ L E",
+answer:"APPLE"
+},
+{
+show:"H O _ S E",
+answer:"HOUSE"
+},
+{
+show:"W A T _ R",
+answer:"WATER"
+},
+{
+show:"G H O _ T",
+answer:"GHOST"
+},
+{
+show:"S H A _ O W",
+answer:"SHADOW"
+},
+{
+show:"M O N _ E Y",
+answer:"MONKEY"
+},
+{
+show:"W I N _ O W",
+answer:"WINDOW"
+},
+{
+show:"B U T _ O N",
+answer:"BUTTON"
+},
+{
+show:"S C H O _ L",
+answer:"SCHOOL"
+},
+{
+show:"S T R E _ M",
+answer:"STREAM"
+}
+],
+
+hard:[
+
+/* 3 HURUF HILANG */
+
+{
+show:"B _ A _ T I _ U L",
+answer:"BEAUTIFUL"
+},
+{
+show:"D _ N G _ R O _ S",
+answer:"DANGEROUS"
+},
+{
+show:"M O _ S T _ R",
+answer:"MONSTER"
+},
+{
+show:"A D _ E N T _ R E",
+answer:"ADVENTURE"
+},
+{
+show:"C H O C _ L A _ E",
+answer:"CHOCOLATE"
+},
+{
+show:"T E L E _ H O _ E",
+answer:"TELEPHONE"
+},
+{
+show:"P O W E _ F _ L",
+answer:"POWERFUL"
+},
+{
+show:"M O U N _ A _ N",
+answer:"MOUNTAIN"
+},
+{
+show:"C O M P _ T _ R",
+answer:"COMPUTER"
+},
+{
+show:"F A N T _ S _ I C",
+answer:"FANTASTIC"
+}
+],
+
+"very hard":[
+
+/* 5 HURUF HILANG */
+
+{
+show:"I _ T _ L _ I G _ N T",
+answer:"INTELLIGENT"
+},
+{
+show:"M _ S T _ R _ O _ S",
+answer:"MYSTERIOUS"
+},
+{
+show:"E _ P _ R I _ E _ T",
+answer:"EXPERIMENT"
+},
+{
+show:"A _ T I _ I _ I A _",
+answer:"ARTIFICIAL"
+},
+{
+show:"C _ N F _ S I _ N G",
+answer:"CONFUSING"
+},
+{
+show:"D _ S A _ P E _ R E D",
+answer:"DISAPPEARED"
+},
+{
+show:"I _ V E S _ I G _ T E",
+answer:"INVESTIGATE"
+},
+{
+show:"T _ A N S _ O R _ A T I O N",
+answer:"TRANSPORTATION"
+},
+{
+show:"C _ M M U _ I C _ T I O N",
+answer:"COMMUNICATION"
+},
+{
+show:"I M A _ I N _ T I O N",
+answer:"IMAGINATION"
+}
+]
+
+};
+
 let playerName = "";
 let selectedChallenge = "";
 let currentQuestions = [];
 let currentQuestion = 0;
 let score = 0;
 let currentPage = "loginPage";
-
+let cipherLevel = "";
+let memoryLevel = "";
+let cipherIndex = 0;
+let memoryIndex = 0;
+let currentCipherQuestions = [];
+let currentMemoryQuestions = [];
+let life = 3;
+let timer;
+let timeLeft = 15;
+let cipherLife = 3;
+let cipherScore = 0;
+let cipherTimer;
+let cipherTimeLeft = 15;
+let memoryLife = 3;
+let memoryScore = 0;
+let memoryTimer;
+let memoryTimeLeft = 15;
+let lastGameMode = "";
+let lastLevel = "";
 /* AUDIO */
 
 const bgMusic =
@@ -1056,14 +1738,41 @@ document.getElementById("bgMusic");
 const clickSound =
 document.getElementById("clickSound");
 
+const correctSound =
+document.getElementById("correctSound");
+
+const wrongSound =
+document.getElementById("wrongSound");
+
 let musicPlaying = false;
 
-/* SOUND EFFECT */
+/* CLICK SOUND */
 
 function playClick(){
 
-clickSound.currentTime = 0;
-clickSound.play();
+  clickSound.pause();
+  clickSound.currentTime = 0;
+  clickSound.play();
+
+}
+
+/* CORRECT SOUND */
+
+function playCorrect(){
+
+  correctSound.pause();
+  correctSound.currentTime = 0;
+  correctSound.play();
+
+}
+
+/* WRONG SOUND */
+
+function playWrong(){
+
+  wrongSound.pause();
+  wrongSound.currentTime = 0;
+  wrongSound.play();
 
 }
 
@@ -1102,9 +1811,61 @@ musicBtn.innerHTML =
 
 function showPage(id){
 
-document.querySelectorAll(".container > div")
+/* TAMBAH GLITCH OVERLAY */
+
+const overlay =
+document.createElement("div");
+
+overlay.className =
+"glitch-overlay";
+
+document.body.appendChild(overlay);
+
+/* TAMBAH BLOOD DRIP */
+
+for(let i=1; i<=5; i++){
+
+  const blood =
+  document.createElement("div");
+
+  blood.className =
+  "blood-drip blood" + i;
+
+  document.body.appendChild(blood);
+
+  setTimeout(()=>{
+    blood.remove();
+  },1000);
+
+}
+
+/* HAPUS OVERLAY */
+
+setTimeout(()=>{
+  overlay.remove();
+},900);
+
+/* TRANSITION BODY */
+
+document.body.classList.add(
+"page-transition"
+);
+
+setTimeout(()=>{
+
+  document.body.classList.remove(
+  "page-transition"
+  );
+
+},900);
+
+/* PAGE SWITCH */
+
+document.querySelectorAll(
+"#loginPage, #homePage, #mindFlayerPage, #levelPage, #quizPage, #cipherLevelPage, #gateCipherPage, #memoryLevelPage, #memoryPage, #gameResultPage"
+)
 .forEach(page=>{
-page.classList.add("hidden");
+  page.classList.add("hidden");
 });
 
 document.getElementById(id)
@@ -1142,15 +1903,39 @@ document.getElementById("backButton")
 
 }
 
+/* BACK BUTTON */
+
+if(id === "loginPage" || id === "homePage"){
+
+document.getElementById("backButton")
+.classList.add("hidden");
+
+}else{
+
+document.getElementById("backButton")
+.classList.remove("hidden");
+
+}
+
 /* BACK FUNCTION */
 
 function goBack(){
 
 playClick();
 
-if(currentPage === "levelPage"){
+/* HENTIKAN SEMUA TIMER */
+clearInterval(timer);
+clearInterval(cipherTimer);
+clearInterval(memoryTimer);
+
+if(currentPage === "mindFlayerPage"){
 
 showPage("homePage");
+
+}
+else if(currentPage === "levelPage"){
+
+showPage("mindFlayerPage");
 
 }
 else if(currentPage === "quizPage"){
@@ -1163,9 +1948,445 @@ else if(currentPage === "resultPage"){
 showPage("homePage");
 
 }
+else if(currentPage === "cipherLevelPage"){
+
+showPage("homePage");
+
+}
+else if(currentPage === "gateCipherPage"){
+
+showPage("cipherLevelPage");
+
+}
+else if(currentPage === "memoryLevelPage"){
+
+showPage("homePage");
+
+}
+else if(currentPage === "memoryPage"){
+
+showPage("memoryLevelPage");
 
 }
 
+}
+
+function openMindFlayer(){
+
+playClick();
+
+showPage("mindFlayerPage");
+
+}
+
+function startGateCipher(){
+
+playClick();
+
+showPage("cipherLevelPage");
+
+}
+
+function startGateCipherLevel(level){
+cipherLife = 3;
+cipherScore = 0;
+lastGameMode = "cipher";
+lastLevel = level;
+
+document.getElementById("cipherLife")
+.innerHTML = cipherLife;
+
+document.getElementById("cipherScore")
+.innerHTML = cipherScore;
+
+playClick();
+
+cipherLevel = level;
+
+cipherIndex = 0;
+
+currentCipherQuestions = cipherQuestions[level];
+
+loadCipherQuestion();
+
+showPage("gateCipherPage");
+
+}
+
+function loadCipherQuestion(){
+
+const q = currentCipherQuestions[cipherIndex];
+
+window.currentCipherAnswer = q.word;
+
+document.getElementById("cipherWord")
+.innerHTML = q.scramble;
+
+document.getElementById("cipherDifficulty")
+.innerHTML =
+cipherLevel.toUpperCase() + " MODE";
+
+document.getElementById("cipherInput")
+.value = "";
+
+document.getElementById("cipherResult")
+.innerHTML = "";
+
+startCipherTimer();
+
+}
+
+function checkCipherAnswer(){
+
+playClick();
+clearInterval(cipherTimer);
+
+const input =
+document.getElementById("cipherInput")
+.value
+.toUpperCase();
+
+if(input === window.currentCipherAnswer){
+
+playCorrect();
+
+cipherScore += 10;
+
+document.getElementById("cipherScore")
+.innerHTML = cipherScore;
+
+document.getElementById("cipherResult")
+.style.color = "#00ff99";
+
+document.getElementById("cipherResult")
+.innerHTML = "✅ CORRECT";
+
+}else{
+
+playWrong();
+
+cipherLife--;
+
+document.getElementById("cipherLife")
+.innerHTML = cipherLife;
+
+document.getElementById("cipherResult")
+.style.color = "#ff4d4d";
+
+document.getElementById("cipherResult")
+.innerHTML =
+"❌ WRONG | ANSWER: "
++ window.currentCipherAnswer;
+
+}
+
+setTimeout(()=>{
+
+cipherIndex++;
+
+if(cipherLife <= 0){
+
+playWrong();
+
+showResult("cipher");
+
+return;
+
+}
+else if(cipherIndex < currentCipherQuestions.length){
+loadCipherQuestion();
+}
+else{
+showResult("cipher");
+}
+
+},1200);
+
+}
+
+function startMemoryGaps(){
+
+playClick();
+
+showPage("memoryLevelPage");
+
+}
+
+function startMemoryLevel(level){
+memoryLife = 3;
+memoryScore = 0;
+lastGameMode = "memory";
+lastLevel = level;
+
+document.getElementById("memoryLife")
+.innerHTML = memoryLife;
+
+document.getElementById("memoryScore")
+.innerHTML = memoryScore;
+
+playClick();
+
+memoryLevel = level;
+
+memoryIndex = 0;
+
+currentMemoryQuestions = memoryQuestions[level];
+
+loadMemoryQuestion();
+
+showPage("memoryPage");
+
+}
+
+function loadMemoryQuestion(){
+
+const q = currentMemoryQuestions[memoryIndex];
+
+window.currentMemoryAnswer = q.answer;
+
+document.getElementById("memoryWord")
+.innerHTML = q.show;
+
+document.getElementById("memoryDifficulty")
+.innerHTML =
+memoryLevel.toUpperCase() + " MODE";
+
+document.getElementById("memoryInput")
+.value = "";
+
+document.getElementById("memoryResult")
+.innerHTML = "";
+
+startMemoryTimer();
+
+}
+
+function checkMemoryAnswer(){
+
+playClick();
+clearInterval(memoryTimer);
+
+const input =
+document.getElementById("memoryInput")
+.value
+.toUpperCase();
+
+if(input === window.currentMemoryAnswer){
+
+playCorrect();
+
+memoryScore += 10;
+
+document.getElementById("memoryScore")
+.innerHTML = memoryScore;
+
+document.getElementById("memoryResult")
+.style.color = "#00ff99";
+
+document.getElementById("memoryResult")
+.innerHTML = "✅ MEMORY RESTORED";
+
+}else{
+
+playWrong();
+
+memoryLife--;
+
+document.getElementById("memoryLife")
+.innerHTML = memoryLife;
+
+document.getElementById("memoryResult")
+.style.color = "#ff4d4d";
+
+document.getElementById("memoryResult")
+.innerHTML =
+"❌ WRONG | ANSWER: "
++ window.currentMemoryAnswer;
+
+}
+
+setTimeout(()=>{
+
+memoryIndex++;
+
+if(memoryLife <= 0){
+
+playWrong();
+
+showPage("homePage");
+
+return;
+
+}
+else if(memoryIndex < currentMemoryQuestions.length){
+loadMemoryQuestion();
+}
+else{showResult("memory");;
+}
+
+},1200);
+
+}
+
+function startTimer(){
+
+clearInterval(timer);
+
+timeLeft = 15;
+
+document.getElementById("timer")
+.innerHTML = timeLeft;
+
+timer = setInterval(()=>{
+
+timeLeft--;
+
+document.getElementById("timer")
+.innerHTML = timeLeft;
+
+if(timeLeft <= 0){
+
+clearInterval(timer);
+
+playWrong();
+
+life--;
+
+document.getElementById("life")
+.innerHTML = life;
+
+document.getElementById("result")
+.innerHTML =
+"⏰ TIME'S UP!";
+
+document.getElementById("result")
+.style.color = "#ff4d4d";
+
+setTimeout(()=>{
+
+if(life <= 0){
+showResult();
+return;
+
+}
+
+currentQuestion++;
+
+if(currentQuestion < 10){
+
+loadQuestion();
+startTimer();
+
+}else{
+
+showResult();
+
+}
+
+},1000);
+
+}
+
+},1000);
+
+}
+
+function startCipherTimer(){
+
+clearInterval(cipherTimer);
+
+cipherTimeLeft = 15;
+
+document.getElementById("cipherTimer")
+.innerHTML = cipherTimeLeft;
+
+cipherTimer = setInterval(()=>{
+
+cipherTimeLeft--;
+
+document.getElementById("cipherTimer")
+.innerHTML = cipherTimeLeft;
+
+if(cipherTimeLeft <= 0){
+
+clearInterval(cipherTimer);
+
+cipherLife--;
+
+document.getElementById("cipherLife")
+.innerHTML = cipherLife;
+
+playWrong();
+
+setTimeout(()=>{
+
+cipherIndex++;
+
+if(cipherLife <= 0){
+
+playWrong();
+
+showResult("cipher");
+
+return;
+
+}
+
+},1000);
+
+}
+
+},1000);
+
+}
+
+function startMemoryTimer(){
+
+clearInterval(memoryTimer);
+
+memoryTimeLeft = 15;
+
+document.getElementById("memoryTimer")
+.innerHTML = memoryTimeLeft;
+
+memoryTimer = setInterval(()=>{
+
+memoryTimeLeft--;
+
+document.getElementById("memoryTimer")
+.innerHTML = memoryTimeLeft;
+
+if(memoryTimeLeft <= 0){
+
+clearInterval(memoryTimer);
+
+memoryLife--;
+
+document.getElementById("memoryLife")
+.innerHTML = memoryLife;
+
+playWrong();
+
+setTimeout(()=>{
+
+memoryIndex++;
+
+if(memoryLife <= 0){
+showPage("homePage");
+}
+else if(memoryIndex < currentMemoryQuestions.length){
+loadMemoryQuestion();
+}
+else{showResult("memory");
+}
+
+},1000);
+
+}
+
+},1000);
+
+}
 /* START */
 
 function startApp(){
@@ -1208,6 +2429,12 @@ playClick();
 
 currentQuestion = 0;
 score = 0;
+life = 3;
+lastGameMode = "quiz";
+lastLevel = level;
+
+document.getElementById("life")
+.innerHTML = life;
 
 document.getElementById("score")
 .innerHTML = score;
@@ -1224,6 +2451,7 @@ currentQuestions = antonymQuestions[level];
 showPage("quizPage");
 
 loadQuestion();
+startTimer();
 
 }
 
@@ -1247,6 +2475,10 @@ function shuffleArray(array){
 /* LOAD QUESTION */
 
 function loadQuestion(){
+
+if(!currentQuestions.length){
+return;
+}
 
 const q = currentQuestions[currentQuestion];
 
@@ -1307,7 +2539,11 @@ buttons.forEach(btn=>{
 btn.disabled = true;
 });
 
+clearInterval(timer);
+
 if(selected === correct){
+
+playCorrect();
 
 document.getElementById("result")
 .innerHTML = "✅ CORRECT";
@@ -1315,9 +2551,16 @@ document.getElementById("result")
 document.getElementById("result")
 .style.color = "#00ff99";
 
-score += 10;
+score += 20;
 
 }else{
+
+playWrong();
+
+life--;
+
+document.getElementById("life")
+.innerHTML = life;
 
 document.getElementById("result")
 .innerHTML =
@@ -1333,11 +2576,18 @@ document.getElementById("score")
 
 setTimeout(()=>{
 
+if(life <= 0){
+showResult();
+return;
+
+}
+
 currentQuestion++;
 
 if(currentQuestion < 10){
 
 loadQuestion();
+startTimer();
 
 }else{
 
@@ -1351,46 +2601,108 @@ showResult();
 
 /* SHOW RESULT */
 
-function showResult(){
+function showResult(gameType = "quiz"){
 
-showPage("resultPage");
+showPage("gameResultPage");
 
-document.getElementById("finalName")
+document.getElementById("resultPlayerName")
 .innerHTML = playerName;
 
-document.getElementById("finalScore")
-.innerHTML = score;
+let remaining = 0;
+let final = 0;
+
+/* QUIZ SCORE */
+if(gameType === "quiz"){
+
+remaining = life;
+final = score;
+
+}
+
+/* CIPHER SCORE */
+else if(gameType === "cipher"){
+
+remaining = cipherLife;
+final = cipherScore;
+
+}
+
+/* MEMORY SCORE */
+else{
+
+remaining = memoryLife;
+final = memoryScore;
+
+}
+
+/* TAMPILKAN SCORE */
+document.getElementById("remainingLife")
+.innerHTML = remaining;
+
+document.getElementById("gameFinalScore")
+.innerHTML = final;
+
+/* RESULT MESSAGE */
 
 let message = "";
 
-if(score === 100){
-message = "🌟 YOU ESCAPED THE UPSIDE DOWN!";
+if(final >= 180){
+
+message =
+"🌟 YOU ESCAPED THE UPSIDE DOWN!";
+
 }
-else if(score >= 70){
-message = "🔥 GREAT WORK!";
+else if(final >= 100){
+
+message =
+"🔥 GREAT WORK!";
+
 }
-else if(score >= 50){
-message = "⚡ GOOD EFFORT!";
+else if(final >= 50){
+
+message =
+"⚡ GOOD EFFORT!";
+
 }
 else{
-message = "👁 THE UPSIDE DOWN IS WATCHING...";
+
+message =
+"👁 THE UPSIDE DOWN IS WATCHING...";
+
 }
 
-document.getElementById("finalMessage")
+document.getElementById("gameResultMessage")
 .innerHTML = message;
 
 }
 
-/* RESTART */
-
-function restartGame(){
+function goHome(){
 
 playClick();
 
-showPage("loginPage");
+showPage("homePage");
 
-document.getElementById("playerName")
-.value = "";
+}
+
+function restartSameGame(){
+
+playClick();
+
+if(lastGameMode === "quiz"){
+
+startQuiz(lastLevel);
+
+}
+else if(lastGameMode === "cipher"){
+
+startGateCipherLevel(lastLevel);
+
+}
+else if(lastGameMode === "memory"){
+
+startMemoryLevel(lastLevel);
+
+}
 
 }
 
